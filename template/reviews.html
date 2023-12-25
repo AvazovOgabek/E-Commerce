@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>E-commerce Website</title>
+  <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
+</head>
+<body>
+
+<header class="sticky-header">
+  <div class="logo">Your Logo</div>
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Categories</a></li>
+      <li><a href="">Cart</a></li>
+      <li><a href="#">Account</a></li>
+    </ul>
+  </nav>
+  <div class="search-bar">
+    <input type="text" placeholder="Search...">
+    <button type="submit">Search</button>
+  </div>
+</header>
+<br>
+
+
+<section class="featured">
+  {% for product in products %}
+    <div class="product-card">
+      <img src="{{ product.image.url }}" alt="Product 1">
+      <h3>{{ product.name }}</h3>
+      <p>${{ product.price }}</p>
+      <button>Add to Cart</button>
+    </div>
+  {% endfor %}
+</section>
+
+<footer>
+  <p>&copy; 2023 Your E-commerce Site. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
