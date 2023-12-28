@@ -13,8 +13,8 @@
   <nav>
     <ul>
       <li><a href="{% url 'reviews' %}">Home</a></li>
+      <li><a href="{% url 'cart' %}">Cart</a></li>
       {% if user.is_authenticated %}
-          <li><a href="{% url 'cart' %}">Cart</a></li>
           <li><a href="#">Account</a></li>
       {% else %}
         <li><a href="{% url 'signin' %}">Sign in</a></li>
@@ -28,18 +28,19 @@
 <br>
 <br>
   <section class="products">
-    {% for product in products %}
+    {% for product in cart_items %}
       <article class="product">
         <img src="{{ product.image.url }}" alt="{{ product.name }}">
         <h2>{{ product.name }}</h2>
         <p>${{ product.price }}</p>
 
-        <form method="post" action="{% url 'add_to_cart' product.id %}">
+        <form method="post" action="{% url 'remove_from_cart' product.id %}">
           {% csrf_token %}
-          <button type="submit">Add to Cart</button>
+          <button type="submit">Remove from Cart</button>
         </form>
       </article>
     {% endfor %}
+
 
   </section>
 </body>

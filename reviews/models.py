@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import CustomUser
 
 
 class Product(models.Model):
@@ -8,3 +9,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Cart(models.Model):
+    user = models.ForeignKey(CustomUser, related_name='carts', on_delete=models.CASCADE)
+    selected_products = models.ManyToManyField('Product', related_name='carts')
+
+    def __str__(self):
+        return f"Cart for {self.user.user.username}"
