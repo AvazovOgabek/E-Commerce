@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>E-commerce Website</title>
+  <link rel="stylesheet" href="{% static 'css/account.css' %}">
+</head>
+<body>
+
+<header class="sticky-header">
+  <div class="logo">E-Commence</div>
+  <nav>
+    <ul>
+        <li><a href="{% url 'reviews' %}">Home</a></li>
+        <li><a href="{% url 'cart' %}">Cart</a></li>
+
+        <li><a style="color: red;" href="{% url 'signout' %}">Sign Out</a></li>
+    </ul>
+  </nav>
+</header>
+
+    <div class="account-box">
+        <h3>Email: {{account.user.email}}</h3>
+        <h3>First name: {{account.user.first_name}}</h3>
+        <h3>Phone number: {{account.phone_number}}</h3>
+        <hr>
+    </div>
+
+
+</body>
+</html>

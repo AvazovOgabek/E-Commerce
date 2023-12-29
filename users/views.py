@@ -36,7 +36,6 @@ def signup_view(request):
     else:
         return render(request, 'signup.html')
     
-
 @login_required(login_url='signin')
 def signout_view(request):
     auth.logout(request)
@@ -56,3 +55,7 @@ def signin_view(request):
             return redirect('signin')
     else:
         return render(request, 'signin.html')
+
+def account(request):
+    account = CustomUser.objects.get(user=request.user)
+    return render(request, 'account.html', {'account' : account})
