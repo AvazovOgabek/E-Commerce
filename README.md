@@ -13,7 +13,7 @@ To run this project locally, follow these steps:
 
 2. **Setup Virtual Environment:**
     ```bash
-    cd e-commerce
+    cd E-Commerce
     virtualenv env
     source env/bin/activate
     ```
