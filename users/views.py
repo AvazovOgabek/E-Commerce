@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from .models import CustomUser
@@ -15,24 +15,31 @@ def signup_view(request):
         confirm_password = request.POST.get('confirm_password')
         phone_number = request.POST.get('phone_number')
 
-        if password == confirm_password:
-            if User.objects.filter(email=email).exists():
-                messages.error(request, 'Email Taken')
-                return redirect('signup')
-            elif User.objects.filter(username=username).exists():
-                messages.error(request, 'Username Taken')
-                return redirect('signup')
-            else:
-                user = User.objects.create_user(username=username, email=email, password=password, first_name=full_name)
+        if all([username, full_name, email, password, confirm_password, phone_number]):
 
-                new_profile = CustomUser.objects.create(user=user, phone_number=phone_number)
-                new_profile.save()
-                
-                auth_login(request, user)
-                return redirect('signin')
+            if password == confirm_password:
+                if User.objects.filter(email=email).exists():
+                    messages.error(request, 'Email Taken')
+                    return redirect('signup')
+                elif User.objects.filter(username=username).exists():
+                    messages.error(request, 'Username Taken')
+                    return redirect('signup')
+                else:
+                    user = User.objects.create_user(username=username, email=email, password=password, first_name=full_name)
+
+                    new_profile = CustomUser.objects.create(user=user, phone_number=phone_number)
+                    new_profile.save()
+                    
+                    auth_login(request, user)
+                    return redirect('signin')
+            else:
+                messages.error(request, 'Passwords do not match')
+                return redirect('signup')
         else:
-            messages.error(request, 'Passwords do not match')
+            messages.error(request, 'All fields are required')
             return redirect('signup')
+
+
     else:
         return render(request, 'signup.html')
     
@@ -45,13 +52,18 @@ def signin_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        if all([username, password]):
 
-        user = auth.authenticate(username=username, password=password)
+            user = auth.authenticate(username=username, password=password)
 
-        if user is not None:
-            return redirect('reviews')
+            if user is not None:
+                auth.login(request, user)
+                return redirect('reviews')
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('signin')
         else:
-            messages.error(request, 'Invalid Credentials')
+            messages.error(request, 'All fields are required')
             return redirect('signin')
     else:
         return render(request, 'signin.html')
